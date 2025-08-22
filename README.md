@@ -4,6 +4,8 @@
 
 The objective of this assessment is to analyze the provided Electric Vehicle (EV) population data and create a frontend dashboard that visualizes key insights about the dataset. This repository contains the necessary data and instructions for you to demonstrate your analytical and dashboard creation skills. Feel free to use any tech stack you want to create the dashboard.
 
+### We encourage the use of AI and LLM tools for this assessment! However, you must understand what you're building and be able to explain your implementation decisions.
+
 ## Dataset
 
 The Electric Vehicle Population dataset is available in the [Electric Vehicle Population Data (CSV)](./data-to-visualize/Electric_Vehicle_Population_Data.csv) within this repository, for more information about the dataset visit [kaggle dataset](https://www.kaggle.com/datasets/willianoliveiragibin/electric-vehicle-population).
@@ -40,6 +42,6 @@ Your submission will be evaluated based on:
 - Update this [README.md](README.md) file with the URL to your live dashboard.
 - **Repository Access:** Keep your repository private to avoid visibility by other candidates. Add the following email addresses as collaborators to the repository, these are our internal emails and will be evaluating your assessment:
   - vedantp@mapup.ai
-  - ajayap@mapupa.ai
-  - divyanshs@mapup.ai
+  - ajayap@mapup.ai
+  - atharvd@mapup.ai
 - Finally, please fill out the google form that you received via email to submit the assessment for review.
