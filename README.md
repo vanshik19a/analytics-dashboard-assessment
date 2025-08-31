@@ -1,47 +1,62 @@
-# MapUp - Analytics Dashboard Assessment
+EV Analytics Dashboard
 
-## Overview
+This project is an Electric Vehicle Analytics Dashboard built as part of a frontend assessment. The goal was to take the Washington State Electric Vehicle Population dataset and create an interactive dashboard that allows users to explore and visualize trends in electric vehicle adoption.
 
-The objective of this assessment is to analyze the provided Electric Vehicle (EV) population data and create a frontend dashboard that visualizes key insights about the dataset. This repository contains the necessary data and instructions for you to demonstrate your analytical and dashboard creation skills. Feel free to use any tech stack you want to create the dashboard.
+Project Overview
 
-### We encourage the use of AI and LLM tools for this assessment! However, you must understand what you're building and be able to explain your implementation decisions.
+The dashboard is a React + TypeScript application set up using Vite as the build tool. I used TailwindCSS for styling and Recharts for the charts. To process the dataset, I integrated PapaParse which reads and cleans the CSV data before rendering it into charts and tables.
 
-## Dataset
+The dataset used is Electric_Vehicle_Population_Data.csv, which contains information such as vehicle make, model, year, electric range, vehicle type, and county.
 
-The Electric Vehicle Population dataset is available in the [Electric Vehicle Population Data (CSV)](./data-to-visualize/Electric_Vehicle_Population_Data.csv) within this repository, for more information about the dataset visit [kaggle dataset](https://www.kaggle.com/datasets/willianoliveiragibin/electric-vehicle-population).
+What I Implemented
 
-**Note:** We've reduced the dataset in the repository to keep the data size small in the frontend bundle.
+Data Loading and Cleaning
+Used PapaParse to load the CSV file from the public/data directory.
+Normalized and cleaned raw fields like Model Year, Electric Range, and County to make them usable in visualizations.
 
-## Tasks
+Data Visualization
+A bar chart shows the top manufacturers by number of EVs.
+A line chart displays EV adoption over the years.
+A pie chart shows the share of different EV types (for example, Battery Electric vs Plug-in Hybrid).
 
-### Dashboard Creation:
+Filters and Search
+Added filters so users can select a specific year or county to narrow down the dataset.
+Integrated a simple search box that allows filtering records by make, model, or county.
 
-- Create a frontend dashboard that presents key insights from the dataset.
-- Design the dashboard to effectively communicate important metrics and visualizations.
-- Include visual representations such as charts, graphs, or tables to showcase trends and relationships in the data.
-- Ensure the dashboard is user-friendly and intuitive for exploring the dataset.
+KPIs (Key Performance Indicators)
+Displayed summary statistics at the top of the dashboard such as total number of EVs, average electric range, and distribution by type.
 
-### Deployment:
+Table View
+Added a searchable, scrollable table where users can browse individual EV records after applying filters.
 
-- Deploy your frontend dashboard to a hosting platform of your choice.
-- Make sure the dashboard is publicly accessible.
+Deployment Setup
+Configured the project with Vite and Tailwind to ensure fast builds.
+Deployed the app on Vercel for live access.
 
-## Evaluation Criteria
+How to Run Locally
 
-Your submission will be evaluated based on:
+1.Clone the repository and move into the app folder:
+git clone https://github.com/vanshik19a/analytics-dashboard-assessment.git
+cd analytics-dashboard-assessment/app
 
-- **Analytical Depth:** The depth of your analysis and insights derived from the dataset.
-- **Dashboard Design:** Clarity, aesthetics, and usability of the frontend dashboard.
-- **Insightfulness:** Effectiveness in conveying key insights about electric vehicles.
 
-## Submission Guidelines
+2.Install dependencies:
+npm install
 
-- Fork this repository to your GitHub account.
-- Complete your analysis and create the frontend dashboard.
-- Deploy the dashboard to a hosting platform.
-- Update this [README.md](README.md) file with the URL to your live dashboard.
-- **Repository Access:** Keep your repository private to avoid visibility by other candidates. Add the following email addresses as collaborators to the repository, these are our internal emails and will be evaluating your assessment:
-  - vedantp@mapup.ai
-  - ajayap@mapup.ai
-  - atharvd@mapup.ai
-- Finally, please fill out the google form that you received via email to submit the assessment for review.
+
+3.Start the development server:
+npm run dev
+
+
+4.Build for production:
+npm run build
+npm run preview
+
+Tech Stack
+
+React 18 with TypeScript
+Vite
+TailwindCSS
+Recharts
+PapaParse
+Vercel (for deployment) - https://analytics-dashboard-assessment-lovat.vercel.app/
