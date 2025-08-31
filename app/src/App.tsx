@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import Papa from "papaparse";
+import Papa, { ParseResult } from "papaparse";
 import MakeBar from "./components/MakeBar";
 import YearLine from "./components/YearLine";
 import TypePie from "./components/TypePie";
@@ -30,40 +30,60 @@ export default function App() {
       header: true,
       dynamicTyping: true,
       skipEmptyLines: true,
-      transformHeader: (h) => h.trim().toLowerCase(),
-      error: (e) => {
-        setErr(e.message || "Failed to load CSV");
+      transformHeader: (h: string) => h.trim().toLowerCase(),
+      error: (e: unknown) => {
+        const msg =
+          typeof e === "object" && e && "message" in (e as any)
+            ? String((e as any).message)
+            : "Failed to load CSV";
+        setErr(msg);
         setLoading(false);
       },
-      complete: (res) => {
+      complete: (res: ParseResult<Record<string, unknown>>) => {
         try {
-          const raw = (res.data as any[]).filter(Boolean);
-          const clean: Row[] = raw.map((r) => ({
-            Make: (r["make"] ?? "").toString(),
-            Model: (r["model"] ?? "").toString(),
-            ModelYear:
-              typeof r["model year"] === "number"
-                ? r["model year"]
-                : r["model year"]
-                ? Number(String(r["model year"]).replace(/[^\d]/g, "")) ||
-                  String(r["model year"])
-                : "",
-            ElectricRange:
-              typeof r["electric range"] === "number"
-                ? r["electric range"]
-                : r["electric range"]
-                ? Number(String(r["electric range"]).replace(/[^\d]/g, "")) ||
-                  String(r["electric range"])
+          const raw = (res.data as Record<string, unknown>[])
+            .filter(Boolean);
+
+          const clean: Row[] = raw.map((r) => {
+            const get = (k: string) =>
+              (r[k] as string | number | undefined) ?? undefined;
+
+            const modelYearRaw = get("model year");
+            const rangeRaw = get("electric range");
+
+            return {
+              Make: String(get("make") ?? ""),
+              Model: String(get("model") ?? ""),
+              ModelYear:
+                typeof modelYearRaw === "number"
+                  ? modelYearRaw
+                  : modelYearRaw
+                  ? Number(String(modelYearRaw).replace(/[^\d]/g, "")) ||
+                    String(modelYearRaw)
+                  : "",
+              ElectricRange:
+                typeof rangeRaw === "number"
+                  ? rangeRaw
+                  : rangeRaw
+                  ? Number(String(rangeRaw).replace(/[^\d]/g, "")) ||
+                    String(rangeRaw)
+                  : undefined,
+              ElectricVehicleType: get("electric vehicle type")
+                ? String(get("electric vehicle type"))
                 : undefined,
-            ElectricVehicleType: r["electric vehicle type"]
-              ? String(r["electric vehicle type"])
-              : undefined,
-            County: r["county"] ? String(r["county"]) : undefined,
-          }));
+              County: get("county") ? String(get("county")) : undefined,
+            };
+          });
+
           const finalRows = clean.filter((r) => r.Make || r.Model);
           setRows(finalRows);
-        } catch (e: any) {
-          setErr(e?.message || "Failed to process CSV");
+
+          if (finalRows.length) {
+            console.log("RAW HEADERS:", Object.keys(raw[0] ?? {}));
+            console.log("Sample rows:", finalRows.slice(0, 3));
+          }
+        } catch (e) {
+          setErr(e instanceof Error ? e.message : "Failed to process CSV");
         } finally {
           setLoading(false);
         }
@@ -78,9 +98,7 @@ export default function App() {
           ? true
           : Number(r.ModelYear) === Number(selectedYear);
       const byCounty =
-        selectedCounty === "All"
-          ? true
-          : (r.County || "") === selectedCounty;
+        selectedCounty === "All" ? true : (r.County ?? "") === selectedCounty;
       return byYear && byCounty;
     });
   }, [rows, selectedYear, selectedCounty]);
